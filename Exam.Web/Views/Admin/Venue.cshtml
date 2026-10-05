@@ -1,0 +1,145 @@
+﻿@model Exam.Domain.Models.Venue
+
+@{
+    ViewData["Title"] = "Venue";
+    Layout = "~/Views/Shared/Admin.cshtml";
+
+    var name = ViewData["Name"] as string;
+    var hallNumber = ViewData["HallNumber"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<section>
+
+    @* Form *@
+    <form asp-action="Venue" asp-controller="Admin" method="post" enctype="multipart/form-data" class="form-container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="danger">@TempData["ErrorMessage"]</div>
+        }
+        <div class="formm">
+            <input asp-for="Id" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="Name">Venue Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HallNumber">Hall Number</label>
+                <input asp-for="HallNumber" class="form-control" />
+                <span asp-validation-for="HallNumber" class="danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Capacity">Capacity</label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="danger"></span>
+            </div>
+
+        </div>
+
+        <div class="sub-button">
+            <button type="submit" class="submit">
+                @(Model.Id != Guid.Empty ? "Update Venue" : "Add Venue")
+            </button>
+        </div>
+    </form>
+
+
+    @* Table *@
+    <div class="table-container">
+
+        <div class="filters">
+
+            <form method="get" asp-controller="Admin" asp-action="Venue" class="search-form1" enctype="multipart/form-data">
+
+                @* Name Search *@
+                <input type="text" name="name" placeholder="Search by Venue Name..." value="@name" />
+
+                @* Hall number Search *@
+                <input type="text" name="hallNumber" placeholder="Search by Hall Number..." value="@hallNumber" />
+
+                <div class="buttons1">
+                    @* submit *@
+                    <button type="submit" class="submit">
+                        <img src="@Url.Content("~/images/Search.svg")" alt="Search" />
+                        Search
+                    </button>
+
+                    @* reset *@
+                    <a asp-controller="Admin" asp-action="Venue" class="reset">
+                        <img src="@Url.Content("~/images/Reset.svg")" alt="Search" />
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="tabless">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Venue Name</th>
+                        <th>Hall Number</th>
+                        <th>Capacity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var venueList = (List<Exam.Domain.Models.Venue>)ViewBag.VenueList;
+                    }
+
+                    @if (venueList.Any())
+                    {
+                        var index = 1;
+                        foreach (var venue in venueList)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@venue.Name</td>
+                                <td>@venue.HallNumber</td>
+                                <td>@venue.Capacity</td>
+                                <td>
+                                    <a asp-action="Venue" asp-controller="Admin" asp-route-id="@venue.Id">
+                                        <img src="@Url.Content("~/images/Edit.svg")" alt="Edit" class="action-image" />
+                                    </a>
+                                    <form asp-action="DeleteVenue" asp-controller="Admin" asp-route-id="@venue.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this venue?');">
+                                        <button type="submit" style="border:none; background:none; padding:0; cursor:pointer;">
+                                            <img src="@Url.Content("~/images/Delete.svg")" alt="Delete" class="action-image" />
+                                        </button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="no-data">
+                                No Venue found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}
+

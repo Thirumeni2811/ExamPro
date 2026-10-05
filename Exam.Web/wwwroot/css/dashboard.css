@@ -1,0 +1,167 @@
+﻿* {
+    margin: 0;
+    font-family: 'Albert Sans', sans-serif;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.logo {
+    color: white;
+    font-weight: 900;
+    font-size: 2rem;
+    font-family: 'Albert Sans', sans-serif;
+    margin: 0;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar {
+    width: 18rem;
+    background-color: #003639;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+    border-right: 1px solid #c0c0c0;
+}
+
+.side {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar a {
+    display: block;
+    padding: 0.6rem;
+    padding-left: 1rem;
+    text-decoration: none;
+    border-radius: 2rem;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: background-color 1s ease, color 0.5s ease;
+}
+
+    .sidebar a:focus,
+    .sidebar a.active {
+        background-color: #4CA884;
+        color: #0F1016;
+    }
+
+
+.main-content {
+    flex: 1;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.main-header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    background-color: #F3F5F7;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #4CA884;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+    .main-header h2 {
+        margin: 0;
+        font-size: 1.4rem;
+    }
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin {
+    font-weight: bold;
+}
+
+.logout-link {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+
+    .logout-link:hover {
+        background-color: #ddd;
+    }
+
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-right: 0.5rem;
+}
+
+.page-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.3rem;
+    box-sizing: border-box;
+}
+
+    .page-content::-webkit-scrollbar {
+        width: 0.3rem;
+    }
+
+    .page-content::-webkit-scrollbar-track {
+        background: #f0f0f0;
+    }
+
+    .page-content::-webkit-scrollbar-thumb {
+        background-color: #003639;
+        border-radius: 0.25rem;
+    }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 15rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+    .hamburger {
+        display: block;
+    }
+
+    .main-header {
+        justify-content: space-between;
+    }
+
+        .main-header h2 {
+            font-size: 1.2rem;
+        }
+}

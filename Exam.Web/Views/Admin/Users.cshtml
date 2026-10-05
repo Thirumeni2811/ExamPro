@@ -1,0 +1,236 @@
+﻿@model Exam.Domain.Models.User
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/Admin.cshtml";
+
+    // Anti-forgery token for AJAX
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+
+    var userId = ViewData["Id"] as string;
+    var name = ViewData["Name"] as string;
+    var email = ViewData["Email"] as string;
+    var contactNumber = ViewData["ContactNumber"] as string;
+    var active = ViewData["Active"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<meta name="csrf-token" content="@tokens.RequestToken" />
+    
+<section>
+
+    @* Form *@
+    <form asp-action="Users" asp-controller="Admin" method="post" enctype="multipart/form-data" class="form-container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="danger">@TempData["ErrorMessage"]</div>
+        }
+        <div class="formm">
+            <input asp-for="Id" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="Name">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email Address</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContactNumber">Contact Number</label>
+                <input asp-for="ContactNumber" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="danger"></span>
+            </div>
+
+            @if (Model.Id == Guid.Empty)
+            {
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="danger"></span>
+                </div>
+            }
+
+        </div>
+
+        <div class="sub-button">
+            <button type="submit" class="submit">
+                @(Model.Id != Guid.Empty ? "Update User" : "Add User")
+            </button>
+        </div>
+    </form>
+
+
+    @* Table *@
+    <div class="table-container">
+
+        <div class="filters">
+
+            <form method="get" asp-controller="Admin" asp-action="Users" class="search-form1" enctype="multipart/form-data">
+
+                @* Id Search *@
+                <input type="text" name="userId" placeholder="Search by Id..." value="@userId" />
+
+                @* Name Search *@
+                <input type="text" name="name" placeholder="Search by Name..." value="@name" />
+
+                @* Email Search *@
+                <input type="text" name="email" placeholder="Search by email..." value="@email" />
+
+                @* Phone number Search *@
+                <input type="text" name="phoneNo" placeholder="Search by contact number..." value="@contactNumber" />
+
+                @* Active Status Filter *@
+                <select name="active" class="form-control">
+                    <option value="">Status</option>
+
+                    @if (active == "true")
+                    {
+                        <option value="true" selected>Active</option>
+                    }
+                    else
+                    {
+                        <option value="true">Active</option>
+                    }
+
+                    @if (active == "false")
+                    {
+                        <option value="false" selected>InActive</option>
+                    }
+                    else
+                    {
+                        <option value="false">InActive</option>
+                    }
+                </select>
+
+                <div class="buttons1">
+                    @* submit *@
+                    <button type="submit" class="submit">
+                        <img src="@Url.Content("~/images/Search.svg")" alt="Search" />
+                        Search
+                    </button>
+
+                    @* reset *@
+                    <a asp-controller="Admin" asp-action="Users" class="reset">
+                        <img src="@Url.Content("~/images/Reset.svg")" alt="Search" />
+                        Reset
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="tabless">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Email Address</th>
+                        <th>Contact Number</th>
+                        <th>Role</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        @{
+                            var usersList = (List<Exam.Domain.Models.User>)ViewBag.UsersList;
+                        }
+
+                        @if (usersList.Any())
+                        {
+                            var index = 1;
+                            foreach (var user in usersList)
+                            {
+                                <tr>
+                                    <td>@index</td>
+                                    <td>@user.Name</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.ContactNumber</td>
+                                    <td>@user.Role</td>
+                                    <td>
+                                    <label class="switch">
+                                        <input type="checkbox" class="toggle-active" data-user-id="@user.Id" @(user.Active ? "checked" : "") />
+                                        <span class="slider round"></span>
+                                    </label>
+                                    </td>
+                                    <td>
+                                        <a asp-action="Users" asp-controller="Admin" asp-route-id="@user.Id">
+                                            <img src="@Url.Content("~/images/Edit.svg")" alt="Edit" class="action-image" />
+                                        </a>
+                                        <form asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                            <button type="submit" style="border:none; background:none; padding:0; cursor:pointer;">
+                                                <img src="@Url.Content("~/images/Delete.svg")" alt="Delete" class="action-image" />
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                index++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="no-data">
+                                    No User found.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".toggle-active").on("change", function () {
+                var checkbox = $(this);
+                var userId = checkbox.data("user-id");
+                var isActive = checkbox.is(":checked");
+
+                $.ajax({
+                    url: '@Url.Content("~/admin/users/toggle-active")',
+                    type: 'POST',
+                    data: {
+                        userId: userId,
+                        isActive: isActive,
+                        __RequestVerificationToken: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // optional: toast instead of alert
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                            checkbox.prop("checked", !isActive); // revert toggle
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                        checkbox.prop("checked", !isActive); // revert toggle
+                    }
+                });
+            });
+        });
+    </script>
+}
+

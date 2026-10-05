@@ -1,0 +1,213 @@
+﻿/* ----- GLOBAL STYLES ----- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: "Libre Baskerville", serif;
+    box-sizing: border-box;
+}
+
+/* ----- HEADER ----- */
+header {
+    width: 100%;
+    height: 70px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 2px solid #003639;
+}
+
+.layout {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logoo {
+    font-size: 2rem;
+    color: #003639;
+    font-weight: 900;
+    font-family: cursive;
+    text-decoration: none;
+}
+
+/* ----- CONTAINER ----- */
+.container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #AFC0C2;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.logout-link {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+
+    .logout-link:hover {
+        background-color: #ddd;
+    }
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* ----- PROFILE ----- */
+.Profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.image-cont {
+    background-color: #AFC0C2;
+    border-radius: 50%;
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-img {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.profile-name {
+    font-family: cursive;
+    font-size: 1.1rem;
+    color: #003639;
+    font-weight: 600;
+    max-width: 15rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ----- DROPDOWN MENU ----- */
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+    .profile-menu a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: #003639;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+        .profile-menu a:hover {
+            border-radius: 0.5rem;
+            background-color: #f3f3f3;
+        }
+
+/* ----- RESPONSIVE ----- */
+@media (max-width: 1024px) {
+    .profile-name {
+        display: none;
+    }
+
+    .profile-img {
+        width: 1.8rem;
+        height: 1.6rem;
+    }
+}
+
+@media (max-width: 578px) {
+    header {
+        height: 50px;
+    }
+
+    .logoo {
+        font-size: 1.3rem;
+    }
+
+    .layout {
+        padding: 0 1rem;
+    }
+}
+
+/*----- MODAL ------*/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    min-width: 300px;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.log-warn  {
+    font-size: 1.2rem;
+}
+
+.modal-actions {
+    margin-top: 1rem;
+}
+
+    .modal-actions a {
+        text-decoration: none;
+        color: #003639;
+    }
+
+    .modal-actions button {
+        margin: 0 0.5rem;
+        padding: 0.4rem 1.2rem;
+        font-weight: 900;
+        font-size: 1rem;
+        border: none;
+        background-color: #AFC0C2;
+        color: #003639;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }

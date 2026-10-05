@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    @* <link rel="icon" type="image/svg+xml" href="~/images/Favicon.png" /> *@
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="container"> 
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <p class="logo">EXAMPRO</p>
+            <div class="side">
+                <a asp-action="Users" asp-controller="Admin" class="@(ViewContext.RouteData.Values["action"].ToString() == "Users" ? "active" : "")">User Management</a>
+                <a asp-action="Venue" asp-controller="Admin" class="@(ViewContext.RouteData.Values["action"].ToString() == "Venue" ? "active" : "")">Venue Management</a>
+                <a asp-action="Invigilator" asp-controller="Admin" class="@(ViewContext.RouteData.Values["action"].ToString() == "Invigilator" ? "active" : "")">Invigilator Availability</a>
+                <a asp-action="Allocation" asp-controller="Admin" class="@(ViewContext.RouteData.Values["action"].ToString() == "Allocation" ? "active" : "")">Allocation Management</a>
+                <a asp-action="ManageAllocation" asp-controller="Admin" class="@(ViewContext.RouteData.Values["action"].ToString() == "ManageAllocation" ? "active" : "")">Manage Allocation</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="hamburger" id="hamburger">&#9776;</button>
+                <div class="header-right">
+                    <span class="admin">ADMIN</span>
+                    <a asp-action="Logout" asp-controller="Account" class="logout-link">Logout</a>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <section class="page-content">
+                @RenderBody()
+            </section>
+        </main>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Toggle sidebar
+            $('#hamburger').on('click', function (e) {
+                e.stopPropagation();
+                $('#sidebar').toggleClass('open');
+            });
+
+            // Close sidebar when clicking outside
+            $(document).on('click', function (e) {
+                var $sidebar = $('#sidebar');
+                var $hamburger = $('#hamburger');
+                if ($sidebar.hasClass('open')) {
+                    if (
+                        !$sidebar.is(e.target) &&
+                        $sidebar.has(e.target).length === 0 &&
+                        !$hamburger.is(e.target) &&
+                        $hamburger.has(e.target).length === 0
+                    ) {
+                        $sidebar.removeClass('open');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

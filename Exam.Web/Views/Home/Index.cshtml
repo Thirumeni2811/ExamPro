@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Admin Login";
+    Layout = "Layout2";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/site.css" />
+}
+
+
+<section class="contain">
+    <a asp-controller="Account" asp-action="AdminLogin" class="box">
+        <div class="heading">Admin</div>
+        <div class="activity">
+            <p>Create & Manage Venues</p>
+            <p>Manage Users (Invigilators)</p>
+            <p>Generate & Approve Allocations</p>
+        </div>
+    </a>
+    <a asp-controller="Account" asp-action="UserLogin" class="box">
+        <div class="heading">Invigilator</div>
+        <div class="activity">
+            <p>Submit Availability</p>
+            <p>View Allocations</p>
+        </div>
+    </a>
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

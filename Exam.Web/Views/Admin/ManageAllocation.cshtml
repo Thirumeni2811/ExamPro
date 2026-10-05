@@ -1,0 +1,109 @@
+﻿@using Exam.Domain.Models
+@using Exam.Domain.Enums
+
+@{
+    ViewData["Title"] = "Manage Allocations";
+    Layout = "~/Views/Shared/Admin.cshtml";
+
+    var selectedDate = ViewBag.SelectedDate as string;
+    var allocations = ViewBag.Allocations as List<Allocation> ?? new List<Allocation>();
+
+    bool anyDraft = allocations.Any(a => a.Status == AllocationStatus.Draft);
+    bool anyApproved = allocations.Any(a => a.Status == AllocationStatus.Approved);
+    bool anyPublished = allocations.Any(a => a.Status == AllocationStatus.Published);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<section class="alloc-mgr">
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="danger">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="success">@TempData["SuccessMessage"]</div>
+    }
+
+    <h2>Manage Allocations</h2>
+
+    @* Date Picker *@
+    <form asp-action="ManageAllocation" asp-controller="Admin" method="get" >
+        <label>Select Date:</label>
+        <input type="date" name="date" value="@selectedDate" required />
+        <button type="submit" class="submit">Load</button>
+    </form>
+
+    @if (!string.IsNullOrWhiteSpace(selectedDate))
+    {
+        <hr />
+
+        <h3>Allocations for @DateTime.Parse(selectedDate).ToString("dd-MMM-yyyy")</h3>
+
+        <div class="alloc-actions">
+            <form asp-action="GenerateAllocation" asp-controller="Admin" method="post" class="inline-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="date" value="@selectedDate" />
+                <button type="submit" class="submit">Generate Draft</button>
+            </form>
+
+            <form asp-action="ApproveAllocation" asp-controller="Admin" method="post" class="inline-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="date" value="@selectedDate" />
+                <button type="submit" class="submit" @(anyDraft ? "" : "disabled")>Approve Draft</button>
+            </form>
+
+            <form asp-action="PublishAllocation" asp-controller="Admin" method="post" class="inline-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="date" value="@selectedDate" />
+                <button type="submit" class="submit" @(anyApproved ? "" : "disabled")>Publish</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="tabless">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Venue</th>
+                            <th>Invigilator</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (allocations.Any())
+                        {
+                            var idx = 1;
+                            foreach (var a in allocations)
+                            {
+                                <tr>
+                                    <td>@idx</td>
+                                    <td>@(a.Venue?.Name ?? "-") (@(a.Venue?.HallNumber ?? "-"))</td>
+                                    <td>@(a.Invigilator?.Name ?? "-")</td>
+                                    <td>@a.Status</td>
+                                </tr>
+                                idx++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="no-data">
+                                    No allocations for this date.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

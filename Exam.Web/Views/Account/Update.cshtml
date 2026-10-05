@@ -1,0 +1,86 @@
+﻿@model Exam.Domain.Models.User
+
+@{
+    ViewData["Title"] = "Update Profile";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<form asp-action="AdminLogin" asp-controller="Account" method="post" class="form-container2">
+    @Html.AntiForgeryToken()
+
+    <div class="heading">Manage Your Account</div>
+    <div class="subheading">Modify your profile settings to stay connected</div>
+
+    @if (!ViewData.ModelState.IsValid)
+        {
+            foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div class="danger">@error.ErrorMessage</div>
+            }
+        }
+
+    <div>
+        <label for="ImageFile">
+            <div class="image-cont">
+                <img id="previewImage"
+                     src="@(string.IsNullOrEmpty(Model?.ProfileImage)
+                                                        ? Url.Content("~/images/Acc2.png")
+                                                        : Model.ProfileImage)"
+                     alt="Profile"
+                     class="profile-img" />
+            </div>
+        </label>
+
+        <input name="ImageFile" type="file" id="ImageFile" accept="image/*" style="display: none;" />
+    </div>
+
+    <div class="form-grid3">
+
+        <div class="form-group">
+            <label asp-for="Name">Name</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email">Email Address</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ContactNumber">Contact Number</label>
+            <input asp-for="ContactNumber" class="form-control" />
+            <span asp-validation-for="ContactNumber" class="danger"></span>
+        </div>
+
+    </div>
+
+    <div class="btnn">
+        <button type="submit">Update</button>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#ImageFile').on('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previewImage').attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+}

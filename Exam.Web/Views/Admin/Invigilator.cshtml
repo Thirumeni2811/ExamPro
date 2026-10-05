@@ -1,0 +1,106 @@
+﻿@model Exam.Domain.Models.InvigilatorAvailability
+
+@{
+    ViewData["Title"] = "Invigilator Availability";
+    Layout = "~/Views/Shared/Admin.cshtml";
+
+    var invigilatorName = ViewData["InvigilatorName"] as string;
+    var dayOfWeek = ViewData["DayOfWeek"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css" />
+}
+
+<section>
+    @* Table *@
+    <div class="table-container">
+
+        <div class="filters">
+
+            <form method="get" asp-controller="Admin" asp-action="Invigilator" class="search-form1" enctype="multipart/form-data">
+
+                @* Name Search *@
+                <input type="text" name="invigilatorName" placeholder="Search by Invigilator Name..." value="@invigilatorName" />
+
+                @* Day Search *@
+                <select name="dayOfWeek" class="dropdown">
+                    <option value="">Select Day</option>
+                    @foreach (var day in Enum.GetNames(typeof(Exam.Domain.Enums.DayOfWeekEnum)))
+                    {
+                        var selectedAttr = (ViewData["DayOfWeek"]?.ToString() == day)
+                            ? "selected=\"selected\""
+                            : string.Empty;
+
+                        @:<option value="@day" @Html.Raw(selectedAttr)>@day</option>
+                    }
+                </select>
+
+
+                <div class="buttons1">
+                    @* submit *@
+                    <button type="submit" class="submit">
+                        <img src="@Url.Content("~/images/Search.svg")" alt="Search" />
+                        Search
+                    </button>
+
+                    @* reset *@
+                    <a asp-controller="Admin" asp-action="Invigilator" class="reset">
+                        <img src="@Url.Content("~/images/Reset.svg")" alt="Search" />
+                        Reset
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div class="tabless">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Invigilator Name</th>
+                        <th>Date</th>
+                        <th>Day</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var availabilityList = (List<Exam.Domain.Models.InvigilatorAvailability>)ViewBag.AvailabilityList;
+                    }
+
+                    @if (availabilityList.Any())
+                    {
+                        var index = 1;
+                        foreach (var av in availabilityList)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@av.Invigilator.Name</td>
+                                <td>@(av.Date.ToString("MMM dd yyyy") ?? "-")</td>
+                                <td>@av.DayOfWeek</td>
+                            </tr>
+                            index++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="no-data">
+                                No Availability found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}
+

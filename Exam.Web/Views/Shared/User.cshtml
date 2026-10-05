@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    @* <link rel="icon" type="image/svg+xml" href="~/images/Favicon.png" /> *@
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="~/css/organisation.css" asp-append-version="true" />
+
+    <!-- Page-specific styles -->
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <link href="~/css/organisation.css" rel="stylesheet" />
+    <header>
+        <div class="layout">
+            <a class="logoo" asp-controller="Home" asp-action="Index">EXAMPRO</a>
+            <a asp-action="Logout" asp-controller="Account" class="logout-link">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#profileToggle').on('click', function (e) {
+                e.stopPropagation();
+                $('#profileMenu').fadeToggle(150);
+            });
+
+            $(document).on('click', function () {
+                $('#profileMenu').fadeOut(150);
+            });
+        });
+    </script>
+</body>
+</html>
