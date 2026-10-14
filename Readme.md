@@ -17,8 +17,8 @@ This is a C# ASP.NET Core MVC layered application** designed to allocate invigil
 
   * `Exam.Domain` – Models, Enums, Response Interfaces
   * `Exam.DataAccess` – EF Core DbContext, Fluent Configurations
-  * `Exam.Service` – (To be implemented) Business logic
-  * `Exam.Web` – (To be implemented) Web UI for Admin & Invigilators
+  * `Exam.Service` – Business logic
+  * `Exam.Web` – Web UI for Admin & Invigilators
   
 * **Database with EF Core Migrations**
 
@@ -52,8 +52,8 @@ This is a C# ASP.NET Core MVC layered application** designed to allocate invigil
 * **Architecture**: MVC with Layered Pattern
 * **Database**: SQL Server
 * **ORM**: Entity Framework Core
-* **Authentication**: JWT (planned)
-* **Password Hashing**: BCrypt (planned)
+* **Authentication**: JWT
+* **Password Hashing**: BCrypt
 
 ---
 
@@ -72,8 +72,8 @@ ExamSystem/
 │   ├── ExamDbContextFactory.cs
 │   └── Migrations/
 │
-├── Exam.Service/      # (To be implemented)
-└── Exam.Web/          # (To be implemented)
+├── Exam.Service/     
+└── Exam.Web/         
 ```
 
 ---
