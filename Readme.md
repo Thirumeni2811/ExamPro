@@ -199,11 +199,11 @@ git init
 
 # 2. Configure user info (local to this repo only)
 git config user.name "Thirumeni"
-git config user.email "Thirumeni.Mallieswaran@kaarinfotech.com"
+git config user.email "thirumeni948@gmail.com"
 (git config --list)
 
 # 3. Add Azure DevOps remote
-git remote add origin https://2025MayUser04@dev.azure.com/2025MayUser04/ExamPro/_git/ExamPro
+git remote add origin https://github.com/Thirumeni2811/ExamPro
 
 # 4. Stage and commit all files
 git add .
